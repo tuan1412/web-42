@@ -58,6 +58,45 @@ app.get('/api/games/:idGame', async (req, res) => {
       .send({ success: 0, data: null, message: err });
   }
 })
+
+app.put('/api/games/:idGame', async (req, res) => {
+  const { idGame } = req.params;
+  const { scores } = req.body;
+
+  try {
+    // c1
+    // const foundGame = await GameModel.findById(idGame);
+    // if (!foundGame) {
+    //   return res
+    //     .status(400)
+    //     .send({ success: 0, data: null });
+    // }
+    // foundGame.scores = scores;
+    // foundGame.save();
+
+    // c2
+
+    const newUpdateGame = await GameModel
+      .findByIdAndUpdate(
+        idGame, 
+        { scores }
+      );
+    
+    if (!newUpdateGame) {
+      return res
+        .status(400)
+        .send({ success: 0, data: null });
+    }
+
+    return res.send({ success: 1, data: newUpdateGame });
+    
+  } catch (err) {
+    res
+      .status(500)
+      .send({ success: 0, data: null, message: err });
+  }
+})
+
 app.post('/api/games', async (req, res) => {
   const { players } = req.body;
   

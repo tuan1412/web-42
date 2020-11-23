@@ -5,8 +5,9 @@ let globalScores = [
   [0, 0, 0, 0]
 ];
 
-const changeScore = function (event) {
-  const $el = $(event.target);
+const changeScore = function (e) {
+  debugger;
+  const $el = $(e.target);
   const value = $el.val();
   const row = $el.data('row');
   const col = $el.data('col');
@@ -19,8 +20,13 @@ const changeScore = function (event) {
   for (let i = 0; i < globalScores.length; i++) {
     sumCol += globalScores[i][col];
   }
+  let sumRow = globalScores[row][0] 
+    + globalScores[row][1] 
+    + globalScores[row][2]
+    + globalScores[row][3]
 
   $(`#gameResult tbody th[data-col="${col}"]`).html(sumCol);
+  $(`#gameResult .row-name[data-row="${row}"] span`).html(sumRow);
   // thay đổi giá trị dom
 }
 
@@ -65,11 +71,13 @@ $.ajax({
 
       $('#gameResult tbody').append(
         `
-          <th scope="col">Total</th>
-          <th scope="col" data-col="0">${sumCol[0]}</th>
-          <th scope="col" data-col="1">${sumCol[1]}</th>
-          <th scope="col" data-col="2">${sumCol[2]}</th>
-          <th scope="col" data-col="3">${sumCol[3]}</th>
+          <tr>
+            <th scope="col">Total</th>
+            <th scope="col" data-col="0">${sumCol[0]}</th>
+            <th scope="col" data-col="1">${sumCol[1]}</th>
+            <th scope="col" data-col="2">${sumCol[2]}</th>
+            <th scope="col" data-col="3">${sumCol[3]}</th>
+          </tr>
         `
       )
 
@@ -77,7 +85,9 @@ $.ajax({
         // round: [1, 3, 3 ,4];
         return `
           <tr>
-            <td>Round ${idx + 1} ${sumRow[idx]}</td>
+            <td class="row-name" data-row="${idx}">
+              Round ${idx + 1} <span>${sumRow[idx]}</span>
+            </td>
             <td>
               <input
                 class="form-control"
@@ -85,7 +95,7 @@ $.ajax({
                 value="${round[0]}"
                 data-col="0"
                 data-row="${idx}"
-                oninput="changeScore(event)"
+                oninput="changeScore(e)"
               >
             </td>
             <td>
@@ -123,8 +133,82 @@ $.ajax({
       }).join('');
 
       $('#gameResult tbody').append(scoreHTML);
-
     } else {
       alert('Server error')
     }
   })
+
+$('#addBtn').on('click', () => {
+  const newRoundIdx = globalScores.length;
+  globalScores.push([0, 0, 0, 0]);
+
+  const newRoundStr = `<tr>
+      <td class="row-name" data-row="${newRoundIdx}">
+        Round ${newRoundIdx + 1} <span>0</span>
+      </td>
+      <td>
+        <input
+          class="form-control"
+          type="number"
+          value="0"
+          data-col="0"
+          data-row="${newRoundIdx}"
+          oninput="changeScore(event)"
+        >
+      </td>
+      <td>
+        <input
+          class="form-control"
+          type="number"
+          value="0"
+          data-col="1"
+          data-row="${newRoundIdx}"
+          oninput="changeScore(event)"
+        >
+      </td>
+      <td>
+        <input
+          class="form-control"
+          type="number"
+          value="0"
+          data-col="2"
+          data-row="${newRoundIdx}"
+          oninput="changeScore(event)"
+        >
+      </td>
+      <td>
+        <input
+          class="form-control"
+          type="number"
+          value="0"
+          data-col="3"
+          data-row="${newRoundIdx}"
+          oninput="changeScore(event)"
+        >
+      </td>
+    </tr>`;
+  
+  $('#gameResult tbody').append(newRoundStr);
+})
+
+$('#saveBtn').on('click', () => {
+  $.ajax({
+    url: '/api/games/' + idGame,
+    type: 'PUT',
+    data: {
+      scores: globalScores
+    }
+  })
+    .then(res => {
+      if (res.success) {
+        $('#alertSuccess').append(`
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>Success</strong> End game.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        `)
+      }
+    });
+})
