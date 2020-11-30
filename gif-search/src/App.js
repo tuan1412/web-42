@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './components/Header';
 import FormSearch from './components/FormSearch';
 import ImageCard from './components/ImageCard';
+import Loading from './components/Loading';
 
 import './App.css';
 
@@ -10,23 +11,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: [
-        {
-          src: 'https://media4.giphy.com/media/W3QKEujo8vztC/giphy.gif?cid=3c8e8684ijz5mcrcff64w12qppjuvmedcykyuwhsa8c78zs4&rid=giphy.gif',
-          alt: 'mèo',
-          title: 'Ảnh mèo'
-        },
-        {
-          src: 'https://media4.giphy.com/media/W3QKEujo8vztC/giphy.gif?cid=3c8e8684ijz5mcrcff64w12qppjuvmedcykyuwhsa8c78zs4&rid=giphy.gif',
-          alt: 'mèo',
-          title: 'Hi hi ha ha'
-        },
-        {
-          src: 'https://media4.giphy.com/media/W3QKEujo8vztC/giphy.gif?cid=3c8e8684ijz5mcrcff64w12qppjuvmedcykyuwhsa8c78zs4&rid=giphy.gif',
-          alt: 'mèo',
-          title: 'he he he he'
-        }
-      ]
+      loading: false,
+      images: []
     }
   }
 
@@ -43,11 +29,21 @@ class App extends React.Component {
     })
   }
 
-  changeDataImages = (data) => {
-    this.setState({
-      images: data
+  changeDataImages = (data, offset) => {
+    this.setState((oldState) => {
+      const { images } = oldState;
+      if (!offset) {
+        return { images: data }
+      }
+      return { images: [...images, ...data]}
     })
   };
+
+  changeLoading = (bool) => {
+    this.setState({
+      loading: bool
+    })
+  }
   
   render() {
     return (
@@ -56,9 +52,11 @@ class App extends React.Component {
           <Header />
           <FormSearch
             changeDataImages={this.changeDataImages}
+            changeLoading={this.changeLoading}
           />
         </div>
         <div className="container">
+          {this.state.loading && <Loading />}
           {this.renderImages()}
         </div>
       </div>
