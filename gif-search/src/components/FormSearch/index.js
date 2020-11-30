@@ -31,7 +31,7 @@ class FormSearch extends Component {
       })
     }
 
-  }, 1000)
+  }, 3000)
 
   // timeout = null;
 
