@@ -1,7 +1,21 @@
+import { useMemo, useState, useEffect } from 'react';
 import logo from '../../logo.svg';
 import './style.css';
 
-function Header() {
+function Header({ loading }) {
+  // thay đổi dựa prop loading truyền từ thằng APP
+  // loading = false , showTile = true
+  // loading = true, showTitle = false
+  const showTitle = useMemo(() => {
+    return !loading;
+  }, [loading]);
+
+  // const [showTitle, setShowTitle] = useState(loading);
+
+  // useEffect(() => {
+  //   setShowTitle(!loading);
+  // }, [loading]);
+
   return (
     <div className="Header
         d-flex
@@ -11,7 +25,7 @@ function Header() {
         mt-4"
     >
       <img src={logo} alt="logo" />
-      <h3>Let's search</h3>
+      {showTitle && <h3>Let's search HOOK</h3>}
     </div>
   )
 }

@@ -1,25 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Header from './components/Header';
-import FormSearch from './components/FormSearch';
-import ImageCard from './components/ImageCard';
-import Loading from './components/Loading';
+import Header from './Header';
+import FormSearch from './FormSearch';
+import ImageCard from './ImageCard';
+import Loading from './Loading';
 
 import './App.css';
 
 // component
 function App() {
   const [loading, setLoading] = useState(false);
+  // destructring của array trong javascript
   const [keyword, setKeyword] = useState('');
   const [offset, setOffset] = useState(0);
   const [images, setImages] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  // const [loading, setLoading] = useState(() => {
+  //   return false;
+  // });
+  // const [state, setState] = useState({
+  //   loading: false,
+  //   offset: 0,
+  //   ...
+  // })
+  console.log('render');
 
   useEffect(() => {
-    console.log('use effect');
-  }, [])
+    console.log('use effect', keyword);
+    return () => {
+      console.log('return use effect', keyword);
+    }
+  }, [keyword])
+
+  const deboundFetchMemo = useMemo(() => {
+    const debounceFetch = debounce((newKeyword) => {
+      fetchData(newKeyword);
+    }, 1000);
+    return debounceFetch;
+  }, []);
+
+  const cb = useCallback(() => {
+    console.log('use callback');
+    return true;
+  }, [keyword]);
+
+  console.log('typeof cb', typeof cb);
+
+  // không chạy function mà gán function đó vào biến cb => typeof cb === 'function'
+  const memoVar = useMemo(() => {
+    console.log('use callback');
+    return true;
+  }, [keyword]);
+  // chạy function mà gán function đó vào biến cb => typeof memoVar === ''
+  console.log('typeof memo var', typeof memoVar);
+
 
   const renderImages = () => {
     return images.map((image, idx) => {
@@ -67,21 +103,19 @@ function App() {
     fetchData(keyword, offset + 25)
   }
 
-  const debounceFetch = debounce((newKeyword) => {
-    fetchData(newKeyword);
-  }, 1000);
+  // const debounceFetch = debounce((newKeyword) => {
+  //   fetchData(newKeyword);
+  // }, 1000);
 
   const handleChangeKeyword = (newKeyword) => {
     setKeyword(newKeyword);
-    debounceFetch(newKeyword);
+    deboundFetchMemo(newKeyword);
   }
 
-  console.log('render');
-  debugger;
   return (
     <div className="App">
       <div className="container mb-4">
-        <Header />
+        <Header loading={loading} />
         <FormSearch
           handleChangeKeyword={handleChangeKeyword}
           keyword={keyword}

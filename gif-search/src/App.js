@@ -1,10 +1,10 @@
-import React from 'react';
-import Header from './components/Header';
-import FormSearch from './components/FormSearch';
-import ImageCard from './components/ImageCard';
-import Loading from './components/Loading';
+import React from "react";
+import Header from "./components/Header";
+import FormSearch from "./components/FormSearch";
+import ImageCard from "./components/ImageCard";
+import Loading from "./components/Loading";
 
-import './App.css';
+import "./App.css";
 
 // component
 class App extends React.Component {
@@ -12,8 +12,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      images: []
-    }
+      images: [],
+    };
   }
 
   renderImages = () => {
@@ -25,34 +25,35 @@ class App extends React.Component {
           alt={image.alt}
           title={image.title}
         />
-      )
-    })
-  }
+      );
+    });
+  };
 
   changeDataImages = (data, offset) => {
     this.setState((oldState) => {
       const { images } = oldState;
       if (!offset) {
-        return { images: data }
+        return { images: data };
       }
-      return { images: [...images, ...data]}
-    })
+      return { images: [...images, ...data] };
+    });
   };
 
   changeLoading = (bool) => {
     this.setState({
-      loading: bool
-    })
-  }
-  
+      loading: bool,
+    });
+  };
+
   render() {
     return (
       <div className="App">
         <div className="container mb-4">
-          <Header />
+          <Header loading={this.state.loading} />
           <FormSearch
             changeDataImages={this.changeDataImages}
             changeLoading={this.changeLoading}
+
           />
         </div>
         <div className="container">
@@ -60,7 +61,7 @@ class App extends React.Component {
           {this.renderImages()}
         </div>
       </div>
-    )
+    );
   }
 }
 
