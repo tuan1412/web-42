@@ -16,7 +16,7 @@ PostModel
   url
   title
   description
-  accountId
+  userId
 CommentModel
   content
   accountId
