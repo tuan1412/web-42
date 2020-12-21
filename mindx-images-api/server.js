@@ -12,6 +12,7 @@ mongoose.connect(process.env.MONGODB_URI, (err) => {
   console.log('MongoDB connected');
 });
 
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(log)

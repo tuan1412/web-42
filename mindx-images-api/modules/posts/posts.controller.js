@@ -24,7 +24,7 @@ const getPosts = async ({ page, limit }) => {
     .skip(offset)
     .limit(limit)
     .sort({ createdAt: -1 })
-    .populate('userId', 'username');
+    .populate('userId', '-password');
   
   const total = await PostModel.find().count();
   
