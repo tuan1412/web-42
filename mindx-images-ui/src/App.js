@@ -1,23 +1,37 @@
-import logo from './logo.svg';
+import { Switch, Route } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import Login from './pages/Auth/Login';
+import SignUp from './pages/Auth/Signup';
+import CreatePost from './pages/Posts/CreatePost';
+import PostDetail from './pages/Posts/PostDetail';
+import NotFound from './pages/NotFound/404';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route path='/' exact>
+          <Home />
+        </Route>
+        <Route path='/login' exact>
+          <Login />
+        </Route>
+        <Route path='/signup' exact>
+          <SignUp />
+        </Route>
+        <Route path='/upload' exact>
+          <CreatePost />
+        </Route>
+        <Route path='/posts/:id' exact>
+          <PostDetail />
+        </Route>
+        <Route path='*'>
+          <NotFound />
+        </Route>
+      </Switch>
     </div>
   );
 }
