@@ -14,11 +14,11 @@ CommentRouter.post('/', isAuth, async (req, res) => {
     const user = req.user;
     const userId = user._id;
     // muốn có req.body thì phải đi qua app.use(express.json());
-    const newComment = await CommentController.createPost(
+    const newComment = await CommentController.createComment({
       content,
       postId,
       userId
-    );
+    });
     res.send({ success: 1, data: newComment })
   } catch (err) {
     res.send({ success: 0, message: err.message })

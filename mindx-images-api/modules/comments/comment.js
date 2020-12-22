@@ -8,11 +8,13 @@ const CommentSchema = new mongoose.Schema(
     },
     createdBy: {
       ref: 'User',
-      type: mongoose.Types.ObjectId
+      type: mongoose.Types.ObjectId,
+      required: true,
     },
     post: {
       ref: 'Post',
-      type: mongoose.Types.ObjectId
+      type: mongoose.Types.ObjectId,
+      required: true,
     }
   },
   {

@@ -5,6 +5,8 @@ const app = express();
 
 const AuthRouter = require('./modules/auth/auth.route');
 const PostRouter = require('./modules/posts/posts.route');
+const CommentRouter = require('./modules/comments/comments.route');
+
 const log = require('./modules/shared/log');
 // connect mongodb
 mongoose.connect(process.env.MONGODB_URI, (err) => {
@@ -22,6 +24,7 @@ const prefix = 'api';
 // Config router
 app.use(`/${prefix}/auth`, AuthRouter);
 app.use(`/${prefix}/posts`, PostRouter);
+app.use(`/${prefix}/comments`, CommentRouter);
 
 // khởi tạo server
 app.listen(8080, (err) => {

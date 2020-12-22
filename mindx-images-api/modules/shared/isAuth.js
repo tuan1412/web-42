@@ -13,6 +13,7 @@ const isAuth = async (req, res, next) => {
     if (!foundUser) {
       throw new Error('Not found user')
     }
+    // để đoạn sau dùng user
     req.user = foundUser;
     next();
   } catch (err) {

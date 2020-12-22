@@ -13,6 +13,14 @@ const createComment = async ({
   return newComment;
 }
 
+const getCommentsByPost = async (postId) => {
+  const comments = await CommentModel.find({ post: postId })
+    .populate('createdBy', 'username');
+
+  return comments;
+}
+
 module.exports = {
   createComment,
+  getCommentsByPost
 }
