@@ -1,6 +1,29 @@
+import { Link } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap';
+import AuthLayout from '../../components/Layout/AuthLayout';
+
 function Login() {
   return (
-    <div>Login</div>
+    <AuthLayout>
+      <div className="Login">
+        <Form className="form-wrapper">
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" />
+          </Form.Group>
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Password" />
+          </Form.Group>
+          <Button variant="primary" type="submit" block>
+            Submit
+          </Button>
+        </Form>
+        <div className="redirect-box mt-4 form-wrapper">
+          <div>Not account? <Link to="/signup">Signup</Link></div>
+        </div>
+      </div>
+    </AuthLayout>
   )
 }
 
