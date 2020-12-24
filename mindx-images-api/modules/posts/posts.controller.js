@@ -1,5 +1,5 @@
 const PostModel = require('./post');
-const CommentController = require('../comments/comments.controller');
+// const CommentController = require('../comments/comments.controller');
 
 const createPost = async ({
   title,
