@@ -1,18 +1,41 @@
+import { useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom'
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { AuthContext } from '../../App';
 
 function CustomNavbar() {
+  const authValue = useContext(AuthContext);
+  const history = useHistory();
+  const { user, logout } = authValue;
+
+  const onHandleLogout = () => {
+    logout();
+    history.push('/login');
+  }
+
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="#home">MindX Images</Navbar.Brand>
+      <Navbar.Brand><Link to="/">MindX Images</Link></Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="#home">Login</Nav.Link>
-          <Nav.Link href="#link">Signup</Nav.Link>
-          <NavDropdown title="Welcome" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Upload</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
-          </NavDropdown>
+          {!user && (
+            <>
+              <Nav.Link>
+                <Link to="/login">Login</Link>
+              </Nav.Link>
+              <Nav.Link>
+                <Link to="/signup">Signup</Link>
+              </Nav.Link>
+            </>
+          )}
+          {user && (
+            <NavDropdown title={`Welcome ${user.username}`} id="basic-nav-dropdown">
+              <NavDropdown.Item><Link to="/login">Upload</Link></NavDropdown.Item>
+              <NavDropdown.Item onClick={onHandleLogout}>Logout</NavDropdown.Item>
+            </NavDropdown>
+          )}
+
         </Nav>
       </Navbar.Collapse>
     </Navbar>
