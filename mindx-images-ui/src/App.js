@@ -1,5 +1,5 @@
 import { Switch, Route } from 'react-router-dom';
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, useRef } from 'react';
 import Home from './pages/Home/Home';
 import Login from './pages/Auth/Login';
 import SignUp from './pages/Auth/Signup';
@@ -16,6 +16,8 @@ export const AuthContext = createContext();
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(true);
+  const firstRender = useRef(true);
 
   const verifyAuth = async () => {
     setLoading(true)
@@ -36,13 +38,12 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('token', token);
     if (token) {
       console.log('call verify', token);
       verifyAuth();
     }
+    firstRender.current = false;
   }, [])
-
 
   const login = ({ user, token }) => {
     localStorage.setItem('token', token);
@@ -54,7 +55,7 @@ function App() {
     setUser(null);
   }
 
-  if (loading) return <div>Loading...</div>
+  if (loading || firstRender.current) return <div>Loading...</div>
 
   const authValue = {
     user,
