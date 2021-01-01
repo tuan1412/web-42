@@ -31,7 +31,7 @@ function CustomNavbar() {
           )}
           {user && (
             <NavDropdown title={`Welcome ${user.username}`} id="basic-nav-dropdown">
-              <NavDropdown.Item><Link to="/login">Upload</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link to="/upload">Upload</Link></NavDropdown.Item>
               <NavDropdown.Item onClick={onHandleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           )}

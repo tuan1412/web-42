@@ -16,8 +16,7 @@ export const AuthContext = createContext();
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [loading, setLoading] = useState(true);
-  const firstRender = useRef(true);
+  const [firstRender, setFirstRender] = useState(true);
 
   const verifyAuth = async () => {
     setLoading(true)
@@ -26,9 +25,11 @@ function App() {
         url: '/auth/verify',
         method: 'GET'
       });
-      setLoading(false);
       if (res.success) {
         setUser(res.data);
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     } catch (err) {
       setLoading(false);
@@ -42,7 +43,7 @@ function App() {
       console.log('call verify', token);
       verifyAuth();
     }
-    firstRender.current = false;
+    setFirstRender(false);
   }, [])
 
   const login = ({ user, token }) => {
@@ -55,7 +56,7 @@ function App() {
     setUser(null);
   }
 
-  if (loading || firstRender.current) return <div>Loading...</div>
+  if (loading || firstRender) return <div>Loading...</div>
 
   const authValue = {
     user,
