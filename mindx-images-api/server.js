@@ -29,6 +29,10 @@ app.use(`/${prefix}/auth`, AuthRouter);
 app.use(`/${prefix}/posts`, PostRouter);
 app.use(`/${prefix}/comments`, CommentRouter);
 
+app.get('/ping', (req, res) => {
+  res.send('pong');
+})
+
 // khởi tạo server
 app.listen(8080, (err) => {
   if (err) throw err;
